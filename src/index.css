@@ -1,0 +1,192 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --bg: #07050c;
+  --surface: #0d0b14;
+  --surface-hover: #14101e;
+  --border: #221b30;
+  --border-bright: #3d2f54;
+  --text-white: #ffffff;
+  --text-muted: #9e93b3;
+  --purple: #a855f7;
+  --purple-glow: rgba(168, 85, 247, 0.25);
+  --cyan: #38bdf8;
+  --green: #22c55e;
+  --font-display: 'Syne', system-ui, sans-serif;
+  --font-mono: 'IBM Plex Mono', ui-monospace, monospace;
+}
+
+body {
+  font-family: var(--font-mono);
+  background-color: var(--bg);
+  color: var(--text-white);
+  overflow-x: hidden;
+}
+
+*, *::before, *::after {
+  border-radius: 0 !important;
+}
+
+.font-display {
+  font-family: var(--font-display);
+}
+
+.font-mono {
+  font-family: var(--font-mono);
+}
+
+/* Neo-Brutalist Grid Background Overlay */
+.grid-bg-overlay {
+  background-image: 
+    linear-gradient(rgba(168, 85, 247, 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(168, 85, 247, 0.05) 1px, transparent 1px);
+  background-size: 40px 40px;
+  mask-image: radial-gradient(ellipse 80% 60% at 50% 0%, #000 30%, transparent 80%);
+}
+
+/* Subtle Noise Texture */
+.noise-overlay {
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  opacity: 0.03;
+}
+
+/* Neo Card Styling */
+.neo-card {
+  background-color: var(--surface);
+  border: 1px solid var(--border);
+  transition: all 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.neo-card:hover {
+  background-color: var(--surface-hover);
+  border-color: var(--border-bright);
+  box-shadow: 0 0 20px var(--purple-glow);
+  transform: translateY(-2px);
+}
+
+/* Glowing Pill / Badge */
+.neo-pill {
+  border: 1px solid var(--border-bright);
+  background: rgba(168, 85, 247, 0.08);
+  color: var(--text-white);
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: var(--bg);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--border-bright);
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--purple);
+}
+
+.project-scroll-row {
+  display: flex;
+  gap: 1.5rem;
+  overflow-x: auto;
+  padding-bottom: 1rem;
+  scroll-snap-type: x proximity;
+  scrollbar-width: thin;
+  scrollbar-color: var(--border-bright) var(--bg);
+}
+
+.project-scroll-row::-webkit-scrollbar {
+  height: 8px;
+}
+
+.project-scroll-row::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.02);
+  border-radius: 999px;
+}
+
+.project-scroll-row::-webkit-scrollbar-thumb {
+  background: linear-gradient(90deg, var(--border-bright), var(--purple));
+  border-radius: 999px;
+}
+
+.project-flip-card {
+  flex: 0 0 clamp(280px, 72vw, 360px);
+  min-height: 360px;
+  perspective: 1600px;
+  scroll-snap-align: start;
+}
+
+.project-flip-card-inner {
+  position: relative;
+  width: 100%;
+  min-height: 360px;
+  transform-style: preserve-3d;
+  transition: transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: transform;
+}
+
+.project-flip-card:hover .project-flip-card-inner,
+.project-flip-card:focus-within .project-flip-card-inner {
+  transform: rotateY(180deg);
+}
+
+.project-flip-face {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  transform-style: preserve-3d;
+}
+
+.project-flip-front {
+  transform: rotateY(0deg) translateZ(1px);
+}
+
+.project-flip-back {
+  transform: rotateY(180deg) translateZ(1px);
+}
+
+.project-flip-front.neo-card:hover {
+  transform: rotateY(0deg) translateZ(1px);
+}
+
+.project-flip-back.neo-card:hover {
+  transform: rotateY(180deg) translateZ(1px);
+}
+
+/* ============================================================
+   SCROLL REVEAL ANIMATIONS
+   Elements start hidden; .in-view triggers the animation
+   ============================================================ */
+
+.animate-fade-up {
+  opacity: 0;
+  transform: translateY(32px);
+  transition: opacity 0.65s cubic-bezier(0.22, 1, 0.36, 1),
+              transform 0.65s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.animate-fade-up.in-view {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Staggered delay helpers */
+.animate-fade-up.delay-1 {
+  transition-delay: 0.1s;
+}
+.animate-fade-up.delay-2 {
+  transition-delay: 0.2s;
+}
+.animate-fade-up.delay-3 {
+  transition-delay: 0.3s;
+}
+.animate-fade-up.delay-4 {
+  transition-delay: 0.4s;
+}
